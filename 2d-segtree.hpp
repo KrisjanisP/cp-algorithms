@@ -28,6 +28,14 @@ struct SegTreeNode {
         ll m = (l+r)/2; spread();
         return left->query(ql,m) + right->query(m+1,qr);
     }
+    void increment(ll i) {
+        if(l>i||r<i) return;
+        val++;
+        if(l==r) return;
+        ll m = (l+r)/2; spread();
+        left->increment(i);
+        right->increment(i);
+    }
 };
 
 struct SegmentTree {
