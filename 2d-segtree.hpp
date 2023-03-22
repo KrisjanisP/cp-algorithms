@@ -16,6 +16,18 @@ struct SegTreeNode {
         delete left;
         delete right;
     }
+    void spread() {
+        if(l==r) return;
+        ll m = (l+r)/2;
+        if(left==nullptr) left = new SegTreeNode(l, m, 0);
+        else right = new SegTreeNode(m+1,r,0);
+    }
+    ll query(ll ql, ll qr) {
+        if(l>=ql&&r<=qr) return val;
+        if(l>qr||r<ql) return 0;
+        ll m = (l+r)/2; spread();
+        return left->query(ql,m) + right->query(m+1,qr);
+    }
 };
 
 struct SegmentTree {
