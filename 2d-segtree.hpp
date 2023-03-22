@@ -20,7 +20,7 @@ struct SegTreeNode {
         if(l==r) return;
         ll m = (l+r)/2;
         if(left==nullptr) left = new SegTreeNode(l, m, 0);
-        else right = new SegTreeNode(m+1,r,0);
+        if(right==nullptr) right = new SegTreeNode(m+1,r,0);
     }
     ll query(ll ql, ll qr) {
         if(l>=ql&&r<=qr) return val;
@@ -50,7 +50,7 @@ struct SegmentTree {
 
     }
     ll query(ll x_min, ll x_max) {
-        return 0;
+        return root->query(x_min,x_max);
     }
 };
 
@@ -75,6 +75,6 @@ public:
 
     }
     ll query(ll x_min, ll x_max, ll y_min, ll y_max){
-
+        return 0;
     }
 };
