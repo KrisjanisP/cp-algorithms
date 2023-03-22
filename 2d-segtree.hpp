@@ -47,7 +47,7 @@ struct SegmentTree {
         delete root;
     }
     void increment(ll x) {
-
+        root->increment(x);
     }
     ll query(ll x_min, ll x_max) {
         return root->query(x_min,x_max);

@@ -28,6 +28,7 @@ bool testSegTree() {
         } else {
             ll j = rand()%SZ;
             cout<<"incrementing "<<j<<endl;
+            a[j]++;
             st->increment(j);
             cout<<j<<" incremented"<<endl;
         }
