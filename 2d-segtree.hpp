@@ -78,6 +78,15 @@ struct TwoDSegTreeNode {
         if(y_min==y_max) return;
         spread();
     }
+    ll query(ll q_x_min, ll q_x_max, ll q_y_min, ll q_y_max){
+        if(y_min>q_y_max||y_max<q_y_min) return 0;
+        if(y_min>=q_y_min&&y_max<=q_y_max) return st->query(q_x_min,q_x_max);
+        ll m = (y_min+y_max)/2;
+        spread();
+        ll l_res = left->query(q_x_min, q_x_max, q_y_min, m);
+        ll r_res = left->query(q_x_min, q_x_max, m+1, q_y_max);
+        return l_res + r_res;
+    }
 };
 
 class TwoDSegTree {
@@ -93,6 +102,6 @@ public:
         root->increment(x,y);
     }
     ll query(ll x_min, ll x_max, ll y_min, ll y_max){
-        return 0;
+        return root->query(x_min,x_max,y_min,y_max);
     }
 };
