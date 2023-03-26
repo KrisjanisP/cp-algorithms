@@ -1,5 +1,6 @@
 #include <iostream>
 #include <cassert>
+#include <cstring>
 #include "2d-segtree.hpp"
 
 using namespace std;
@@ -36,6 +37,40 @@ bool testSegTree() {
     return true;
 }
 
+bool test2DSegTree() {
+    const ll SZ = 23;
+    TwoDSegTree* st = new TwoDSegTree(0,SZ-1,0,SZ-1);
+    ll matrix[SZ][SZ];
+    memset(matrix,0,sizeof(matrix));
+    for(int i=0;i<1000;i++){
+        if(rand()%2==0){
+            ll b = rand()%SZ;
+            ll t = rand()%SZ;
+            ll l = rand()%SZ;
+            ll r = rand()%SZ;
+            cout<<"querying "<<l<<" "<<r<<" "<<b<<" "<<t<<endl;
+            ll st_sum = st->query(l,r,b,t);
+            ll a_sum = 0;
+            for(int j=l;j<=r;j++){
+                for(int k=b;k<=t;k++){
+                    a_sum += matrix[j][k];
+                }
+            }
+            assert(st_sum==a_sum);
+            cout<<l<<" "<<r<<" "<<b<<" "<<t<<" sum ok"<<endl;
+        } else {
+            ll x = rand()%SZ;
+            ll y = rand()%SZ;
+            cout<<"incrementing "<<x<<" "<<y<<endl;
+            matrix[y][x]++;
+            st->increment(x,y);
+            cout<<x<<" "<<y<<" incremented"<<endl;
+        }
+    }
+    return true;
+}
+
 int main() {
     assert(testSegTree());
+    assert(test2DSegTree());
 }
