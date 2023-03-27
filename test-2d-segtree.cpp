@@ -43,7 +43,7 @@ bool testSegTree() {
 }
 
 bool test2DSegTree() {
-    const ll SZ = 23;
+    const ll SZ = 3;
     TwoDSegTree* st = new TwoDSegTree(0,SZ-1,0,SZ-1);
     ll matrix[SZ][SZ];
     memset(matrix,0,sizeof(matrix));
@@ -61,13 +61,18 @@ bool test2DSegTree() {
                     a_sum += matrix[j][k];
                 }
             }
-            assert(st_sum==a_sum);
+            if(st_sum!=a_sum){
+                cout<<"st sum: "<<st_sum<<endl;
+                cout<<"a sum: "<<a_sum<<endl;
+                cout<<"seg tree: "<<endl; st->print(); cout<<endl;
+                assert(st_sum==a_sum);
+            }
             cout<<l<<" "<<r<<" "<<b<<" "<<t<<" sum ok"<<endl;
         } else {
             ll x = rand()%SZ;
             ll y = rand()%SZ;
             cout<<"incrementing "<<x<<" "<<y<<endl;
-            matrix[y][x]++;
+            matrix[x][y]++;
             st->increment(x,y);
             cout<<x<<" "<<y<<" incremented"<<endl;
         }
@@ -77,5 +82,5 @@ bool test2DSegTree() {
 
 int main() {
     assert(testSegTree());
-    //assert(test2DSegTree());
+    assert(test2DSegTree());
 }

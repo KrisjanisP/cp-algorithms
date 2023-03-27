@@ -33,10 +33,9 @@ struct SegTreeNode
     }
     ll query(ll ql, ll qr)
     {
-        // cout<<ql<<" "<<qr<<" "<<(l+r)/2<<endl;
         if (ql > qr)
             return 0;
-        if (l >= ql && r <= qr) // the st node is fully inside the query
+        if (l >= ql && r <= qr)
             return val;
         if (l > qr || r < ql)
             return 0;
@@ -107,6 +106,10 @@ struct TwoDSegTreeNode
         st = new SegmentTree(x_min, x_max);
         left = nullptr;
         right = nullptr;
+        this->x_min = x_min;
+        this->x_max = x_max;
+        this->y_min = y_min;
+        this->y_max = y_max;
     }
     ~TwoDSegTreeNode()
     {
@@ -126,21 +129,36 @@ struct TwoDSegTreeNode
         if (y_min > y || y_max < y)
             return;
         st->increment(x);
-        if (y_min == y_max)
+        if (y_min == y_max){
             return;
+        }
         spread();
+        left->increment(x,y);
+        right->increment(x,y);
     }
     ll query(ll q_x_min, ll q_x_max, ll q_y_min, ll q_y_max)
     {
+        cout<<q_y_min<<" "<<q_y_max<<" "<<y_min<<" "<<y_max<<endl;
+        if(q_y_min > q_y_max) return 0;
         if (y_min > q_y_max || y_max < q_y_min)
             return 0;
         if (y_min >= q_y_min && y_max <= q_y_max)
             return st->query(q_x_min, q_x_max);
         ll m = (y_min + y_max) / 2;
         spread();
-        ll l_res = left->query(q_x_min, q_x_max, q_y_min, m);
-        ll r_res = left->query(q_x_min, q_x_max, m + 1, q_y_max);
+        ll l_res = left->query(q_x_min, q_x_max, q_y_min, min(m,q_y_max));
+        ll r_res = right->query(q_x_min, q_x_max, max(m + 1,q_y_min), q_y_max);
         return l_res + r_res;
+    }
+    void print() {
+        if(y_min==y_max) {
+            st->print();
+            cout<<endl;
+            return;
+        }
+        spread();
+        left->print();
+        right->print();
     }
 };
 
@@ -164,5 +182,8 @@ public:
     ll query(ll x_min, ll x_max, ll y_min, ll y_max)
     {
         return root->query(x_min, x_max, y_min, y_max);
+    }
+    void print(){
+        root->print();
     }
 };
