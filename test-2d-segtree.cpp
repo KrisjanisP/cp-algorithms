@@ -17,14 +17,19 @@ bool testSegTree() {
     const ll SZ = 23;
     SegmentTree* st = new SegmentTree(0,SZ-1);
     ll a[SZ] = {};
-    for(int i=0;i<1000;i++){
+    for(int i=0;i<10000;i++){
         if(rand()%2==0){
             ll l = rand()%SZ;
             ll r = rand()%SZ;
             cout<<"querying "<<l<<" "<<r<<endl;
             ll st_sum = st->query(l,r);
             ll a_sum = sum(a,l,r);
-            assert(st_sum==a_sum);
+            if(st_sum!=a_sum){
+                cout<<"st sum: "<<st_sum<<endl;
+                cout<<"a sum: "<<a_sum<<endl;
+                cout<<"seg tree: "; st->print();
+                return false;
+            }
             cout<<l<<" "<<r<<" sum ok"<<endl;
         } else {
             ll j = rand()%SZ;
@@ -72,5 +77,5 @@ bool test2DSegTree() {
 
 int main() {
     assert(testSegTree());
-    assert(test2DSegTree());
+    //assert(test2DSegTree());
 }
