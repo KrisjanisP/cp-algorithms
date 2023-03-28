@@ -25,14 +25,15 @@ struct SegTreeNode
     {
         if (l == r)
             return;
-        ll m = (l + r) / 2;
         if (left == nullptr)
-            left = new SegTreeNode(l, m, 0);
+            left = new SegTreeNode(l, (l+r-1)/2, 0);
         if (right == nullptr)
-            right = new SegTreeNode(m + 1, r, 0);
+            right = new SegTreeNode((l+r+1)/2, r, 0);
     }
     ll query(ll ql, ll qr)
     {
+        ql = max(ql,l);
+        qr = min(qr,r);
         if (ql > qr)
             return 0;
         if (l >= ql && r <= qr)
@@ -40,8 +41,7 @@ struct SegTreeNode
         if (l > qr || r < ql)
             return 0;
         spread();
-        ll m = (l + r) / 2;
-        return left->query(ql, min(m,qr)) + right->query(max(ql,m + 1), qr);
+        return left->query(ql, qr) + right->query(ql, qr);
     }
     void increment(ll i)
     {
@@ -120,9 +120,9 @@ struct TwoDSegTreeNode
     void spread()
     {
         if (left == nullptr)
-            left = new TwoDSegTreeNode(x_min, x_max, y_min, (y_min + y_max) / 2);
+            left = new TwoDSegTreeNode(x_min, x_max, y_min, (y_min + y_max-1) / 2);
         if (right == nullptr)
-            right = new TwoDSegTreeNode(x_min, x_max, (y_min + y_max) / 2 + 1, y_max);
+            right = new TwoDSegTreeNode(x_min, x_max, (y_min + y_max+1) / 2, y_max);
     }
     void increment(ll x, ll y)
     {
@@ -138,16 +138,18 @@ struct TwoDSegTreeNode
     }
     ll query(ll q_x_min, ll q_x_max, ll q_y_min, ll q_y_max)
     {
-        cout<<q_y_min<<" "<<q_y_max<<" "<<y_min<<" "<<y_max<<endl;
+        q_y_max = min(q_y_max, y_max);
+        q_x_max = min(q_x_max, x_max);
+        q_y_min = max(q_y_min, y_min);
+        q_x_min = max(q_x_min, x_min);
         if(q_y_min > q_y_max) return 0;
         if (y_min > q_y_max || y_max < q_y_min)
             return 0;
         if (y_min >= q_y_min && y_max <= q_y_max)
             return st->query(q_x_min, q_x_max);
-        ll m = (y_min + y_max) / 2;
         spread();
-        ll l_res = left->query(q_x_min, q_x_max, q_y_min, min(m,q_y_max));
-        ll r_res = right->query(q_x_min, q_x_max, max(m + 1,q_y_min), q_y_max);
+        ll l_res = left->query(q_x_min, q_x_max, q_y_min, q_y_max);
+        ll r_res = right->query(q_x_min, q_x_max, q_y_min, q_y_max);
         return l_res + r_res;
     }
     void print() {

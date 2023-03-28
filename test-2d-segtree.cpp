@@ -39,15 +39,16 @@ bool testSegTree() {
             cout<<j<<" incremented"<<endl;
         }
     }
+    delete st;
     return true;
 }
 
 bool test2DSegTree() {
-    const ll SZ = 3;
-    TwoDSegTree* st = new TwoDSegTree(0,SZ-1,0,SZ-1);
+    const ll SZ = 131;
+    TwoDSegTree* st = new TwoDSegTree(-SZ,SZ-1,-SZ,SZ-1);
     ll matrix[SZ][SZ];
     memset(matrix,0,sizeof(matrix));
-    for(int i=0;i<1000;i++){
+    for(int i=0;i<100000;i++){
         if(rand()%2==0){
             ll b = rand()%SZ;
             ll t = rand()%SZ;
@@ -77,6 +78,7 @@ bool test2DSegTree() {
             cout<<x<<" "<<y<<" incremented"<<endl;
         }
     }
+    delete st;
     return true;
 }
 
