@@ -27,7 +27,7 @@ public:
         delete[] st;
     }
     T query(int l, int r) {
-        int j = 0; while ((1 << j) <= r - l + 1) j++;
+        int j = 0; while ((1 << (j+1)) <= r - l + 1) j++;
         return std::min(st[j][l], st[j][r - (1 << j) + 1]);
     }
 };
