@@ -10,8 +10,10 @@ include_directories(${GTEST_INCLUDE_DIRS})
 
 file(GLOB_RECURSE SOURCES "src/*.hpp")
 
+enable_testing()
+include(GoogleTest)
+
 add_executable(test_SparseTable ${SOURCES} tests/test_SparseTable.cpp)
 target_link_libraries(test_SparseTable GTest::GTest GTest::Main)
-
 gtest_discover_tests(test_SparseTable)
 
